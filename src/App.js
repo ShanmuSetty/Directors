@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Star, Calendar, Film, ArrowLeft, MapPin, Calendar as CalendarIcon } from 'lucide-react';
+import { Search, Star, Calendar, Film, ArrowLeft, MapPin } from 'lucide-react';
 import './App.css';
 import DirectorCard from './DirectorCard';
 import MovieCard from './MovieCard';
@@ -10,7 +10,7 @@ const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
 const DirectorsApp = () => {
   // State for directors data
-  const [allDirectors, setAllDirectors] = useState([]);
+  
   const [filteredDirectors, setFilteredDirectors] = useState([]);
   const [selectedDirector, setSelectedDirector] = useState(null);
   const [directorMovies, setDirectorMovies] = useState([]);
@@ -18,7 +18,6 @@ const DirectorsApp = () => {
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const [directorsPerPage] = useState(30);
-  const [totalDirectors, setTotalDirectors] = useState(0);
   
   // UI state
   const [searchTerm, setSearchTerm] = useState('');
@@ -50,14 +49,14 @@ const [showFullBio, setShowFullBio] = useState(false);
       const response = await fetch('https://directornames.onrender.com/api/directors');
       const indianDirectorNames = await response.json();
       
-      let requestCount = 0;
+      
       
       for (const directorName of indianDirectorNames) {
         try {
           const searchRes = await fetch(
             `${BASE_URL}/search/person?api_key=${API_KEY}&query=${encodeURIComponent(directorName)}`
           );
-          requestCount++;
+          
 
           if (!searchRes.ok) continue;
 
@@ -73,7 +72,7 @@ const [showFullBio, setShowFullBio] = useState(false);
               const detailRes = await fetch(
                 `${BASE_URL}/person/${director.id}?api_key=${API_KEY}`
               );
-              requestCount++;
+              
 
               if (detailRes.ok) {
                 const details = await detailRes.json();
@@ -111,9 +110,9 @@ const [showFullBio, setShowFullBio] = useState(false);
 
       const sortedDirectors = directorsData.sort((a, b) => b.popularity - a.popularity);
       
-      setAllDirectors(sortedDirectors);
+      
       setFilteredDirectors(sortedDirectors);
-      setTotalDirectors(sortedDirectors.length);
+      
       
       setLoading(false);
 
